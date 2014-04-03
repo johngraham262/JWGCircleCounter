@@ -1,5 +1,6 @@
 //
 //  JWGCircleCounter.m
+//  Version 0.1
 //
 //  https://github.com/johngraham262/JWGCircleCounter
 //
@@ -8,10 +9,6 @@
 
 #define JWG_SECONDS_ADJUSTMENT 1000
 #define JWG_NUM_TIME_INTERVALS 400.0f
-
-#define JWG_CIRCLE_COLOR_DEFAULT [UIColor colorWithRed:239/255.0f green:101/255.0f blue:48/255.0f alpha:1]
-#define JWG_CIRCLE_BACKGROUND_COLOR_DEFAULT [UIColor colorWithWhite:.85f alpha:1]
-#define JWG_CIRCLE_TIMER_WIDTH 8.0f
 
 @interface JWGCircleCounter() {
     NSUInteger numAdjustedSecondsCompleted;
