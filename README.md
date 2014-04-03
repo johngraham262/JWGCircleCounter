@@ -3,7 +3,7 @@ JWGCircleCounter
 
 This control is a simple view that counts down a specified amount and alerts you on completion.
 
-** gif coming soon **
+![alt tag](https://raw.github.com/johngraham262/JWGCircleCounter/master/Screenshots/JWGCircleCounterDemo.gif)
 
 Demo
 ---
