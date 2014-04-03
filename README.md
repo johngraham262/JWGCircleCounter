@@ -26,21 +26,23 @@ Alternatively, you can manually add the files in the `JWGCircleCounter` director
 Usage
 --
 
-Start by creating a `JWGCircleCounter` of your own:
+Start by creating a `JWGCircleCounter` of your own and add it to your view:
 
 ```ios
-JWGCircleCounter *circleCounter = [[JWGCircleCounter alloc] init];
+JWGCircleCounter *circleCounter = [[JWGCircleCounter alloc] initWithFrame:CGRectMake(0,0,40,40)];
+...
+[your_view addSubview:circleCounter];
 ```
 
 After initialization, start the counter by:
 ```ios
-- (void)startWithSeconds:(NSInteger)seconds;
+[circleCounter startWithSeconds:5];
 ```
 
 Once it's been started, the counter can be managed with:
 ```ios
-- (void)resume;
-- (void)stop;
+[circleCounter stop];
+[circleCounter resume];
 ```
 
 Customization & counter state
