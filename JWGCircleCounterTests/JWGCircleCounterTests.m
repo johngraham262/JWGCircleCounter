@@ -78,6 +78,13 @@
                   @"Circle counter should run properly on resumes.");
 }
 
+- (void)testTimerExpirationMarksCounterAsFinished {
+    [Expecta setAsynchronousTestTimeout:3];
+    [self.circleCounter startWithSeconds:1];
+
+    EXP_expect(self.circleCounter.didFinish).will.beTruthy();
+}
+
 - (void)testTimerExpirationTriggersDelegate {
     [Expecta setAsynchronousTestTimeout:3];
     self.circleCounter.delegate = self;

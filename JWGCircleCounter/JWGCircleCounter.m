@@ -123,9 +123,10 @@
             // finished
             numAdjustedSecondsCompleted = numAdjustedSecondsTotal - 1;
             [self stop];
+            _didFinish = YES;
+
             // alert delegate method that it finished
             if ([self.delegate respondsToSelector:@selector(circleCounterTimeDidExpire:)]) {
-                _didFinish = YES;
                 [self.delegate circleCounterTimeDidExpire:self];
             }
         } else {
