@@ -1,6 +1,6 @@
 //
 //  JWGCircleCounterTests.m
-//  Version 0.1
+//  Version 0.1.0
 //
 //  https://github.com/johngraham262/JWGCircleCounter
 //
