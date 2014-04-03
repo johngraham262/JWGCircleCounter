@@ -70,9 +70,10 @@ Please write tests and ensure that existing tests pass too. Open a pull request 
 
 Roadmap
 --
-1. Move `didStart`, `isRunning`, and `didFinish` properties to an enum.
-2. Create a single "smart" method that can do start/pause/restart.
-3. A circle counter that hasn't been started yet shows a full circle, instead of an empty one.
+1. Add versioning (for cocoapods).
+2. Move `didStart`, `isRunning`, and `didFinish` properties to an enum.
+3. Create a single "smart" method that can do start/pause/restart.
+4. A circle counter that hasn't been started yet shows a full circle, instead of an empty one.
 
 Shoutout
 --
