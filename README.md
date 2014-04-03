@@ -1,4 +1,4 @@
-JWGCircleCounter
+JWGCircleCounter [![Build Status](https://travis-ci.org/johngraham262/JWGCircleCounter.png?branch=master)](https://travis-ci.org/johngraham262/JWGCircleCounter)
 =========
 
 This control is a simple view that counts down a specified amount and alerts you on completion.
