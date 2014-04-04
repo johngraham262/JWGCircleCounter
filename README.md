@@ -15,7 +15,7 @@ Navigate to `DemoApp` and run `pod install` in your terminal. Open `DemoApp.xcwo
 Installation
 ---
 
-[PENDING] Easiest installation is through [Cocoapods]. Add the following line to your `Podfile`:
+Easiest installation is through [Cocoapods]. Add the following line to your `Podfile`:
 ```sh
 pod `JWGCircleCounter`
 ```
