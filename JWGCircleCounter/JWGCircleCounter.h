@@ -57,6 +57,13 @@
  */
 - (void)resume;
 
+/**
+ * Stops the counter and pauses animation as if it were at the initial, pre-started, state.
+ * After reset is called, didStart, isRunning, and didFinish will all be NO.
+ * You may start the timer again with startWithSeconds:.
+ */
+- (void)reset;
+
 @end
 
 

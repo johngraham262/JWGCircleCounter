@@ -94,4 +94,15 @@
     EXP_expect(self.circleCounter.didFinish).will.beTruthy();
 }
 
+- (void)testReset {
+    [self.circleCounter startWithSeconds:3];
+    [self.circleCounter reset];
+    XCTAssertFalse(self.circleCounter.didStart,
+                   @"Circle counter should not have started after a reset.");
+    XCTAssertFalse(self.circleCounter.isRunning,
+                   @"Circle counter should not be running after a reset.");
+    XCTAssertFalse(self.circleCounter.didFinish,
+                   @"Circle counter should not be finished after a reset.");
+}
+
 @end

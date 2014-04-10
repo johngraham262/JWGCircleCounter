@@ -81,6 +81,14 @@
     _isRunning = NO;
 }
 
+- (void)reset {
+    [self stop];
+    numAdjustedSecondsCompleted = 0;
+    _didFinish = NO;
+    _didStart = NO;
+    [self setNeedsDisplay];
+}
+
 #pragma mark - Private methods
 
 - (void)drawRect:(CGRect)rect {

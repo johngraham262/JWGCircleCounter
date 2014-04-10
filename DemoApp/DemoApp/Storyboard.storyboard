@@ -39,11 +39,22 @@
                                     <action selector="startButtonAction:" destination="iif-uK-E1R" eventType="touchUpInside" id="YBl-SI-MI1"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MeQ-if-Lc3">
+                                <rect key="frame" x="137" y="381" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Reset">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="resetButtonAction:" destination="iif-uK-E1R" eventType="touchUpInside" id="9hf-Fe-32P"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <connections>
                         <outlet property="circleCounter" destination="Sbc-sK-pYS" id="5o8-ic-hVu"/>
+                        <outlet property="resetButton" destination="MeQ-if-Lc3" id="xZF-cY-vGj"/>
                         <outlet property="secondsLabel" destination="zzC-ju-j3J" id="1L3-7D-2fA"/>
                         <outlet property="startButton" destination="YuV-Lv-Iah" id="6Df-bE-2La"/>
                         <outletCollection property="circleCounter" destination="Sbc-sK-pYS" id="5yg-bk-ByN"/>
