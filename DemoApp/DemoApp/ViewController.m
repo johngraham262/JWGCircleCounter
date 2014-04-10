@@ -9,7 +9,6 @@
 #import "ViewController.h"
 
 @interface ViewController ()
-@property (strong, nonatomic) IBOutlet UIButton *stopButton;
 @property (strong, nonatomic) IBOutlet UIButton *startButton;
 @property (weak, nonatomic) IBOutlet UIButton *resetButton;
 @end
@@ -54,7 +53,6 @@
 
 - (void)circleCounterTimeDidExpire:(JWGCircleCounter *)circleCounter {
     [self.startButton setTitle:@"Restart" forState:UIControlStateNormal];
-    self.stopButton.enabled = NO;
 
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Timer Expired"
                                                         message:nil
