@@ -8,14 +8,13 @@
 #import "JWGCircleCounter.h"
 
 #define JWG_SECONDS_ADJUSTMENT 1000
-#define JWG_NUM_TIME_INTERVALS 400.0f
+#define JWG_TIMER_INTERVAL .01 // 1/100 FPS
 
 @interface JWGCircleCounter() {
     NSUInteger numAdjustedSecondsCompleted;
     NSUInteger numAdjustedSecondsCompletedIncrementor;
     NSUInteger numAdjustedSecondsTotal;
     NSUInteger numSeconds;
-    CGFloat timerInterval;
 }
 @end
 
@@ -61,7 +60,6 @@
     numAdjustedSecondsCompleted = 0;
     numAdjustedSecondsCompletedIncrementor = seconds;
     numAdjustedSecondsTotal = seconds * JWG_SECONDS_ADJUSTMENT;
-    timerInterval = (CGFloat)numSeconds / JWG_NUM_TIME_INTERVALS;
 
     _didStart = YES;
     _didFinish = NO;
@@ -126,7 +124,7 @@
 
 - (void)update {
     if (self.isRunning) {
-        numAdjustedSecondsCompleted += numAdjustedSecondsTotal / (numSeconds / timerInterval);
+        numAdjustedSecondsCompleted += numAdjustedSecondsTotal / (numSeconds / JWG_TIMER_INTERVAL);
         if (numAdjustedSecondsCompleted >= numAdjustedSecondsTotal) {
             // finished
             numAdjustedSecondsCompleted = numAdjustedSecondsTotal - 1;
@@ -139,7 +137,7 @@
             }
         } else {
             // in progress
-            [NSTimer scheduledTimerWithTimeInterval:timerInterval
+            [NSTimer scheduledTimerWithTimeInterval:JWG_TIMER_INTERVAL
                                              target:self
                                            selector:@selector(update)
                                            userInfo:nil
