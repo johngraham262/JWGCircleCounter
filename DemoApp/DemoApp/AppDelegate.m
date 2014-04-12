@@ -21,12 +21,6 @@
     [self.window makeKeyAndVisible];
 
     return YES;
-
-
-//    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-//    self.window.backgroundColor = [UIColor whiteColor];
-//    [self.window makeKeyAndVisible];
-//    return YES;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
