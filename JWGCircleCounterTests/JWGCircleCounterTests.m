@@ -34,9 +34,8 @@
 }
 
 - (void)testStartWithInvalidTimerLengthFails {
-    [self.circleCounter startWithSeconds:0];
-    XCTAssertFalse(self.circleCounter.isRunning,
-                   @"Circle counter started with length < 1 should be nil.");
+    EXP_expect(^{ [self.circleCounter startWithSeconds:0]; }).to.raise(@"JWGInvalidTime");
+    EXP_expect(^{ [self.circleCounter startWithSeconds:-5]; }).to.raise(@"JWGInvalidTime");
 }
 
 - (void)testStartWithValidTimerLengthSucceeds {

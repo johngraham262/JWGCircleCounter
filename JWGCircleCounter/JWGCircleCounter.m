@@ -8,14 +8,17 @@
 #import "JWGCircleCounter.h"
 
 #define JWG_SECONDS_ADJUSTMENT 1000
-#define JWG_TIMER_INTERVAL .01 // 1/100 FPS
+#define JWG_TIMER_INTERVAL .015 // ~60 FPS
 
-@interface JWGCircleCounter() {
-    NSUInteger numAdjustedSecondsCompleted;
-    NSUInteger numAdjustedSecondsCompletedIncrementor;
-    NSUInteger numAdjustedSecondsTotal;
-    NSUInteger numSeconds;
-}
+@interface JWGCircleCounter()
+
+@property (strong, nonatomic) NSTimer *timer;
+@property (strong, nonatomic) NSDate *lastStartTime;
+
+@property (assign, nonatomic) NSTimeInterval totalTime;
+@property (assign, nonatomic) NSTimeInterval currentElapsedTime;
+@property (assign, nonatomic) NSTimeInterval totalElapsedTime;
+
 @end
 
 @implementation JWGCircleCounter
@@ -28,6 +31,9 @@
     self.circleColor = JWG_CIRCLE_COLOR_DEFAULT;
     self.circleBackgroundColor = JWG_CIRCLE_BACKGROUND_COLOR_DEFAULT;
     self.circleTimerWidth = JWG_CIRCLE_TIMER_WIDTH;
+
+    self.currentElapsedTime = 0;
+    self.totalElapsedTime = 0;
 }
 
 - (id)initWithFrame:(CGRect)frame {
@@ -48,46 +54,88 @@
 }
 
 - (void)startWithSeconds:(NSInteger)seconds {
-    if (seconds < 1) {
-        return;
-    }
 
-    if (self.didStart && !self.didFinish) {
-        return;
-    }
+    [JWGCircleCounter validateInputTime:seconds];
 
-    numSeconds = seconds;
-    numAdjustedSecondsCompleted = 0;
-    numAdjustedSecondsCompletedIncrementor = seconds;
-    numAdjustedSecondsTotal = seconds * JWG_SECONDS_ADJUSTMENT;
+    self.totalTime = seconds;
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:JWG_TIMER_INTERVAL
+                                                  target:self
+                                                selector:@selector(timerFired)
+                                                userInfo:nil
+                                                 repeats:YES];
 
+    _isRunning = YES;
     _didStart = YES;
     _didFinish = NO;
-    [self resume];
+
+    [self.timer fire];
+    self.lastStartTime = [NSDate dateWithTimeIntervalSinceNow:0];
+    self.currentElapsedTime = 0;
+    self.totalElapsedTime = 0;
+}
+
+- (void)timerFired {
+    if (!_isRunning) {
+        return;
+    }
+
+    self.currentElapsedTime = (self.totalElapsedTime +
+                               [[NSDate date] timeIntervalSinceDate:self.lastStartTime]);
+
+    // Check if timer has expired.
+    if (self.currentElapsedTime > self.totalTime) {
+        [self timerCompleted];
+    }
+
+    [self setNeedsDisplay];
 }
 
 - (void)resume {
-    if (!self.didStart || self.isRunning) {
-        return;
-    }
-
     _isRunning = YES;
-    [self update];
+    NSDate *now = [NSDate dateWithTimeIntervalSinceNow:0];
+    self.lastStartTime = now;
+    [self.timer setFireDate:now];
 }
 
 - (void)stop {
     _isRunning = NO;
+
+    self.totalElapsedTime += [[NSDate date] timeIntervalSinceDate:self.lastStartTime];
+    self.lastStartTime = [NSDate dateWithTimeIntervalSinceNow:0];
+    self.currentElapsedTime = self.totalElapsedTime;
+
+    [self.timer setFireDate:[NSDate distantFuture]];
 }
 
 - (void)reset {
-    [self stop];
-    numAdjustedSecondsCompleted = 0;
-    _didFinish = NO;
+    [self.timer invalidate];
+    self.timer = nil;
+
+    _isRunning = NO;
     _didStart = NO;
-    [self setNeedsDisplay];
+    _didFinish = NO;
 }
 
 #pragma mark - Private methods
+
++ (void)validateInputTime:(NSInteger)time {
+    if (time < 1) {
+        [NSException raise:@"JWGInvalidTime" format:@"circle counter timer length %li", (long)time];
+    }
+}
+
+- (void)timerCompleted {
+    [self.timer invalidate];
+
+    _isRunning = NO;
+    _didFinish = YES;
+
+    self.currentElapsedTime = self.totalTime + .0001; // add little extra to draw complete circle
+
+    if ([self.delegate respondsToSelector:@selector(circleCounterTimeDidExpire:)]) {
+        [self.delegate circleCounterTimeDidExpire:self];
+    }
+}
 
 - (void)drawRect:(CGRect)rect {
     CGContextRef context = UIGraphicsGetCurrentContext();
@@ -109,8 +157,8 @@
     // Draw the remaining amount of timer circle.
     CGContextSetLineWidth(context, self.circleTimerWidth);
     CGContextBeginPath(context);
-    CGFloat startAngle = (((CGFloat)numAdjustedSecondsCompleted + 1.0f) /
-                          ((CGFloat)numAdjustedSecondsTotal)*M_PI*2 - angleOffset);
+    CGFloat startAngle = (((CGFloat)self.currentElapsedTime) /
+                          ((CGFloat)self.totalTime)*M_PI*2 - angleOffset);
     CGFloat endAngle = 2*M_PI - angleOffset;
     CGContextAddArc(context,
                     CGRectGetMidX(rect), CGRectGetMidY(rect),
@@ -120,31 +168,6 @@
                     0);
     CGContextSetStrokeColorWithColor(context, [self.circleColor CGColor]);
     CGContextStrokePath(context);
-}
-
-- (void)update {
-    if (self.isRunning) {
-        numAdjustedSecondsCompleted += numAdjustedSecondsTotal / (numSeconds / JWG_TIMER_INTERVAL);
-        if (numAdjustedSecondsCompleted >= numAdjustedSecondsTotal) {
-            // finished
-            numAdjustedSecondsCompleted = numAdjustedSecondsTotal - 1;
-            [self stop];
-            _didFinish = YES;
-
-            // alert delegate method that it finished
-            if ([self.delegate respondsToSelector:@selector(circleCounterTimeDidExpire:)]) {
-                [self.delegate circleCounterTimeDidExpire:self];
-            }
-        } else {
-            // in progress
-            [NSTimer scheduledTimerWithTimeInterval:JWG_TIMER_INTERVAL
-                                             target:self
-                                           selector:@selector(update)
-                                           userInfo:nil
-                                            repeats:NO];
-        }
-        [self setNeedsDisplay];
-    }
 }
 
 @end
