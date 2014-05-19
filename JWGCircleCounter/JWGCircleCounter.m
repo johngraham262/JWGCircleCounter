@@ -68,10 +68,11 @@
     _didStart = YES;
     _didFinish = NO;
 
-    [self.timer fire];
     self.lastStartTime = [NSDate dateWithTimeIntervalSinceNow:0];
     self.currentElapsedTime = 0;
     self.totalElapsedTime = 0;
+
+    [self.timer fire];
 }
 
 - (void)timerFired {
