@@ -72,7 +72,6 @@ Roadmap
 --
 1. Move `didStart`, `isRunning`, and `didFinish` properties to an enum.
 2. Create a single "smart" method that can do start/pause/restart.
-3. A circle counter that hasn't been started yet shows a full circle, instead of an empty one.
 
 Shoutout
 --
