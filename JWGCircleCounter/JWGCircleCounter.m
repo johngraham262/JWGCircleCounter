@@ -18,7 +18,6 @@
 @property (assign, nonatomic) NSTimeInterval totalTime;
 
 @property (assign, nonatomic) NSTimeInterval completedTimeUpToLastStop;
-@property (assign, nonatomic) NSTimeInterval elapsedTime;
 
 @end
 
@@ -34,7 +33,7 @@
     self.circleTimerWidth = JWG_CIRCLE_TIMER_WIDTH;
 
     self.completedTimeUpToLastStop = 0;
-    self.elapsedTime = 0;
+    _elapsedTime = 0;
 }
 
 - (id)initWithFrame:(CGRect)frame {
@@ -71,7 +70,7 @@
 
     self.lastStartTime = [NSDate dateWithTimeIntervalSinceNow:0];
     self.completedTimeUpToLastStop = 0;
-    self.elapsedTime = 0;
+    _elapsedTime = 0;
 
     [self.timer fire];
 }
@@ -81,8 +80,8 @@
         return;
     }
 
-    self.elapsedTime = (self.completedTimeUpToLastStop +
-                        [[NSDate date] timeIntervalSinceDate:self.lastStartTime]);
+    _elapsedTime = (self.completedTimeUpToLastStop +
+                    [[NSDate date] timeIntervalSinceDate:self.lastStartTime]);
 
     // Check if timer has expired.
     if (self.elapsedTime > self.totalTime) {
@@ -103,7 +102,7 @@
     _isRunning = NO;
 
     self.completedTimeUpToLastStop += [[NSDate date] timeIntervalSinceDate:self.lastStartTime];
-    self.elapsedTime = self.completedTimeUpToLastStop;
+    _elapsedTime = self.completedTimeUpToLastStop;
 
     [self.timer setFireDate:[NSDate distantFuture]];
 }
@@ -132,7 +131,7 @@
     _isRunning = NO;
     _didFinish = YES;
 
-    self.elapsedTime = self.totalTime;
+    _elapsedTime = self.totalTime;
 
     if ([self.delegate respondsToSelector:@selector(circleCounterTimeDidExpire:)]) {
         [self.delegate circleCounterTimeDidExpire:self];
