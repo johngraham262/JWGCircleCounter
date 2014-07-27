@@ -16,8 +16,9 @@
 @property (strong, nonatomic) NSDate *lastStartTime;
 
 @property (assign, nonatomic) NSTimeInterval totalTime;
-@property (assign, nonatomic) NSTimeInterval currentElapsedTime;
-@property (assign, nonatomic) NSTimeInterval totalElapsedTime;
+
+@property (assign, nonatomic) NSTimeInterval completedTimeUpToLastStop;
+@property (assign, nonatomic) NSTimeInterval elapsedTime;
 
 @end
 
@@ -32,8 +33,8 @@
     self.circleBackgroundColor = JWG_CIRCLE_BACKGROUND_COLOR_DEFAULT;
     self.circleTimerWidth = JWG_CIRCLE_TIMER_WIDTH;
 
-    self.currentElapsedTime = 0;
-    self.totalElapsedTime = 0;
+    self.completedTimeUpToLastStop = 0;
+    self.elapsedTime = 0;
 }
 
 - (id)initWithFrame:(CGRect)frame {
@@ -69,8 +70,8 @@
     _didFinish = NO;
 
     self.lastStartTime = [NSDate dateWithTimeIntervalSinceNow:0];
-    self.currentElapsedTime = 0;
-    self.totalElapsedTime = 0;
+    self.completedTimeUpToLastStop = 0;
+    self.elapsedTime = 0;
 
     [self.timer fire];
 }
@@ -80,11 +81,11 @@
         return;
     }
 
-    self.currentElapsedTime = (self.totalElapsedTime +
-                               [[NSDate date] timeIntervalSinceDate:self.lastStartTime]);
+    self.elapsedTime = (self.completedTimeUpToLastStop +
+                        [[NSDate date] timeIntervalSinceDate:self.lastStartTime]);
 
     // Check if timer has expired.
-    if (self.currentElapsedTime > self.totalTime) {
+    if (self.elapsedTime > self.totalTime) {
         [self timerCompleted];
     }
 
@@ -101,9 +102,8 @@
 - (void)stop {
     _isRunning = NO;
 
-    self.totalElapsedTime += [[NSDate date] timeIntervalSinceDate:self.lastStartTime];
-    self.lastStartTime = [NSDate dateWithTimeIntervalSinceNow:0];
-    self.currentElapsedTime = self.totalElapsedTime;
+    self.completedTimeUpToLastStop += [[NSDate date] timeIntervalSinceDate:self.lastStartTime];
+    self.elapsedTime = self.completedTimeUpToLastStop;
 
     [self.timer setFireDate:[NSDate distantFuture]];
 }
@@ -121,7 +121,8 @@
 
 + (void)validateInputTime:(NSInteger)time {
     if (time < 1) {
-        [NSException raise:@"JWGInvalidTime" format:@"circle counter timer length %li", (long)time];
+        [NSException raise:@"JWGInvalidTime"
+                    format:@"inputted timer length, %li, must be a positive integer", (long)time];
     }
 }
 
@@ -131,7 +132,7 @@
     _isRunning = NO;
     _didFinish = YES;
 
-    self.currentElapsedTime = self.totalTime + .0001; // add little extra to draw complete circle
+    self.elapsedTime = self.totalTime;
 
     if ([self.delegate respondsToSelector:@selector(circleCounterTimeDidExpire:)]) {
         [self.delegate circleCounterTimeDidExpire:self];
@@ -140,8 +141,8 @@
 
 - (void)drawRect:(CGRect)rect {
     CGContextRef context = UIGraphicsGetCurrentContext();
-    float radius = CGRectGetWidth(rect)/2.0f - self.circleTimerWidth/2.0f;
-    float angleOffset = M_PI_2;
+    CGFloat radius = CGRectGetWidth(rect)/2.0f - self.circleTimerWidth/2.0f;
+    CGFloat angleOffset = M_PI_2;
 
     // Draw the background of the circle.
     CGContextSetLineWidth(context, self.circleTimerWidth);
@@ -158,14 +159,18 @@
     // Draw the remaining amount of timer circle.
     CGContextSetLineWidth(context, self.circleTimerWidth);
     CGContextBeginPath(context);
-    CGFloat startAngle = (((CGFloat)self.currentElapsedTime) /
-                          ((CGFloat)self.totalTime)*M_PI*2 - angleOffset);
-    CGFloat endAngle = 2*M_PI - angleOffset;
+    CGFloat startAngle = (((CGFloat)self.elapsedTime) / (CGFloat)self.totalTime)*M_PI*2;
+
+    if (!self.isRunning && !self.didStart && !self.didFinish) {
+        // If the timer hasn't started yet, fill the whole circle. (startAngle will be NaN)
+        startAngle = 0;
+    }
+
     CGContextAddArc(context,
                     CGRectGetMidX(rect), CGRectGetMidY(rect),
                     radius,
-                    startAngle,
-                    endAngle,
+                    startAngle - angleOffset,
+                    2*M_PI - angleOffset,
                     0);
     CGContextSetStrokeColorWithColor(context, [self.circleColor CGColor]);
     CGContextStrokePath(context);
