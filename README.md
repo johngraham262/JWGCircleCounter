@@ -28,19 +28,19 @@ Usage
 
 Start by creating a `JWGCircleCounter` of your own and add it to your view:
 
-```ios
+```objective-c
 JWGCircleCounter *circleCounter = [[JWGCircleCounter alloc] initWithFrame:CGRectMake(0,0,40,40)];
 ...
 [your_view addSubview:circleCounter];
 ```
 
 After initialization, start the counter by:
-```ios
+```objective-c
 [circleCounter startWithSeconds:5];
 ```
 
 Once it's been started, the counter can be managed with:
-```ios
+```objective-c
 [circleCounter stop];
 [circleCounter resume];
 ```
@@ -50,14 +50,14 @@ Customization & counter state
 When the frame is set, the circle counter will expand to fit the bounds.
 
 The following properties can be set:
-```ios
+```objective-c
 @property (nonatomic, strong) UIColor *circleColor;
 @property (nonatomic, strong) UIColor *circleBackgroundColor;
 @property (nonatomic, assign) CGFloat circleTimerWidth;
 ```
 
 You can inspect the state of a counter through a few `readonly` properties:
-```ios
+```objective-c
 @property (nonatomic, assign, readonly) BOOL didStart;
 @property (nonatomic, assign, readonly) BOOL isRunning;
 @property (nonatomic, assign, readonly) BOOL didFinish;
