@@ -60,6 +60,18 @@
                   @"Circle counter should still be marked as started.");
 }
 
+- (void)testElapsedTimeDuringStop {
+    NSInteger timerLength = 3;
+    XCTAssertEqual(self.circleCounter.elapsedTime, 0,
+                  @"Circle counter elapsed time should be 0 before starting");
+    [self.circleCounter startWithSeconds:timerLength];
+    [self.circleCounter stop];
+    XCTAssertTrue(self.circleCounter.elapsedTime > 0,
+                  @"Circle counter elapsed time should be greater than 0");
+    XCTAssertTrue(self.circleCounter.elapsedTime < timerLength,
+                  @"Circle counter elapsed time should not be completed yet");
+}
+
 - (void)testResumeWorks {
     [self.circleCounter startWithSeconds:3];
     [self.circleCounter stop];
@@ -84,6 +96,15 @@
     EXP_expect(self.circleCounter.didFinish).will.beTruthy();
 }
 
+- (void)testTimerExpirationElapsedTime {
+    [Expecta setAsynchronousTestTimeout:3];
+        NSInteger timerLength = 1;
+    self.circleCounter.delegate = self;
+    [self.circleCounter startWithSeconds:timerLength];
+
+    EXP_expect(self.circleCounter.elapsedTime == timerLength).will.beTruthy();
+}
+
 - (void)testTimerExpirationTriggersDelegate {
     [Expecta setAsynchronousTestTimeout:3];
     self.circleCounter.delegate = self;
@@ -96,6 +117,8 @@
 - (void)testReset {
     [self.circleCounter startWithSeconds:3];
     [self.circleCounter reset];
+    XCTAssertEqual(self.circleCounter.elapsedTime, 0,
+                   @"Circle counter elapsed time should be 0 after reset.");
     XCTAssertFalse(self.circleCounter.didStart,
                    @"Circle counter should not have started after a reset.");
     XCTAssertFalse(self.circleCounter.isRunning,

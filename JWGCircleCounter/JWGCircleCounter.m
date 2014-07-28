@@ -111,6 +111,7 @@
     [self.timer invalidate];
     self.timer = nil;
 
+    _elapsedTime = 0;
     _isRunning = NO;
     _didStart = NO;
     _didFinish = NO;
