@@ -1,6 +1,6 @@
 //
 //  JWGCircleCounter.h
-//  Version 0.2.0
+//  Version 0.2.1
 //
 //  https://github.com/johngraham262/JWGCircleCounter
 //
@@ -36,6 +36,11 @@
 
 /// Indicates if the circle counter finishing counting down and animating.
 @property (nonatomic, assign, readonly) BOOL didFinish;
+
+/// The amount of time that the timer has completed. It takes into account any stops/resumes
+/// and is updated in real time.
+@property (assign, nonatomic, readonly) NSTimeInterval elapsedTime;
+
 
 /**
  * Begins the count down and starts the animation. This has no effect if the counter
