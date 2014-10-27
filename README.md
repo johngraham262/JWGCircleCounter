@@ -1,7 +1,7 @@
 JWGCircleCounter [![Build Status](https://travis-ci.org/johngraham262/JWGCircleCounter.png?branch=master)](https://travis-ci.org/johngraham262/JWGCircleCounter)
 =========
 
-This control is a simple view that counts down a specified amount and alerts you on completion.
+This control is a simple view that counts down a specified amount and alerts you on completion. You can see this live in [Teleportante].
 
 ![alt tag](https://raw.github.com/johngraham262/JWGCircleCounter/master/Screenshots/JWGCircleCounterDemo.gif)
 
@@ -80,4 +80,4 @@ This was inspired by pppoe's [Circle-Counter-Down]. Thank you!
 
 [Cocoapods]: http://cocoapods.org/
 [Circle-Counter-Down]: https://github.com/pppoe/Circle-Counter-Down
-
+[Teleportante]: bit.ly/Teleportante
