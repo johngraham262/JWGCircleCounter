@@ -80,4 +80,4 @@ This was inspired by pppoe's [Circle-Counter-Down]. Thank you!
 
 [Cocoapods]: http://cocoapods.org/
 [Circle-Counter-Down]: https://github.com/pppoe/Circle-Counter-Down
-[Teleportante]: bit.ly/Teleportante
+[Teleportante]: http://bit.ly/Teleportante
