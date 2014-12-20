@@ -28,6 +28,7 @@
 - (void)baseInit {
     self.backgroundColor = [UIColor clearColor];
 
+    self.fillColor = JWG_CIRCLE_FILL_COLOR_DEFAULT;
     self.circleColor = JWG_CIRCLE_COLOR_DEFAULT;
     self.circleBackgroundColor = JWG_CIRCLE_BACKGROUND_COLOR_DEFAULT;
     self.circleTimerWidth = JWG_CIRCLE_TIMER_WIDTH;
@@ -154,7 +155,8 @@
                     2*M_PI,
                     0);
     CGContextSetStrokeColorWithColor(context, [self.circleBackgroundColor CGColor]);
-    CGContextStrokePath(context);
+    CGContextSetFillColorWithColor(context, [self.fillColor CGColor]);
+    CGContextDrawPath(context, kCGPathFillStroke);
 
     // Draw the remaining amount of timer circle.
     CGContextSetLineWidth(context, self.circleTimerWidth);

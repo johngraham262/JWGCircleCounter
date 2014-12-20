@@ -10,6 +10,7 @@
 // Defaults
 #define JWG_CIRCLE_COLOR_DEFAULT [UIColor colorWithRed:239/255.0f green:101/255.0f blue:48/255.0f alpha:1]
 #define JWG_CIRCLE_BACKGROUND_COLOR_DEFAULT [UIColor colorWithWhite:.85f alpha:1]
+#define JWG_CIRCLE_FILL_COLOR_DEFAULT [UIColor clearColor]
 #define JWG_CIRCLE_TIMER_WIDTH 8.0f
 
 @protocol JWGCircleCounterDelegate;
@@ -18,6 +19,9 @@
 
 /// The receiver of all counter delegate callbacks.
 @property (nonatomic, strong) id<JWGCircleCounterDelegate> delegate;
+
+/// The color of inside of the circle - default is JWG_CIRCLE_FILL_COLOR_DEFAULT.
+@property (nonatomic, strong) UIColor *fillColor;
 
 /// The color of the circle indicating the remaining amount of time - default is JWG_CIRCLE_COLOR_DEFAULT.
 @property (nonatomic, strong) UIColor *circleColor;
