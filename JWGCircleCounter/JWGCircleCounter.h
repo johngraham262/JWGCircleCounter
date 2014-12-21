@@ -20,14 +20,14 @@
 /// The receiver of all counter delegate callbacks.
 @property (nonatomic, strong) id<JWGCircleCounterDelegate> delegate;
 
-/// The color of inside of the circle - default is JWG_CIRCLE_FILL_COLOR_DEFAULT.
-@property (nonatomic, strong) UIColor *fillColor;
-
 /// The color of the circle indicating the remaining amount of time - default is JWG_CIRCLE_COLOR_DEFAULT.
 @property (nonatomic, strong) UIColor *circleColor;
 
 /// The color of the circle indicating the expired amount of time - default is JWG_CIRCLE_BACKGROUND_COLOR_DEFAULT.
 @property (nonatomic, strong) UIColor *circleBackgroundColor;
+
+/// The color of inside of the circle - default is JWG_CIRCLE_FILL_COLOR_DEFAULT.
+@property (nonatomic, strong) UIColor *circleFillColor;
 
 /// The thickness of the circle color - default is JWG_CIRCLE_TIMER_WIDTH.
 @property (nonatomic, assign) CGFloat circleTimerWidth;
