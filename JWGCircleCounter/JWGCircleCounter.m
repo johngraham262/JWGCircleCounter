@@ -32,7 +32,9 @@
     self.circleBackgroundColor = JWG_CIRCLE_BACKGROUND_COLOR_DEFAULT;
     self.circleFillColor = JWG_CIRCLE_FILL_COLOR_DEFAULT;
     self.circleTimerWidth = JWG_CIRCLE_TIMER_WIDTH;
-
+    
+    [self setupTimeLabel];
+    
     self.completedTimeUpToLastStop = 0;
     _elapsedTime = 0;
 }
@@ -72,6 +74,10 @@
     self.lastStartTime = [NSDate dateWithTimeIntervalSinceNow:0];
     self.completedTimeUpToLastStop = 0;
     _elapsedTime = 0;
+    
+    if (!_timeLabelHidden) {
+        [_timeLabel setHidden:NO];
+    }
 
     [self.timer fire];
 }
@@ -89,6 +95,8 @@
         [self timerCompleted];
     }
 
+    _timeLabel.text = [NSString stringWithFormat:@"%li", (long)ceil(_totalTime - _elapsedTime)];
+    
     [self setNeedsDisplay];
 }
 
@@ -118,6 +126,13 @@
     _didFinish = NO;
 }
 
+- (void)setTimeLabelHidden:(BOOL)timeLabelHidden {
+    
+    _timeLabelHidden = timeLabelHidden;
+    
+    [_timeLabel setHidden:timeLabelHidden];
+}
+
 #pragma mark - Private methods
 
 + (void)validateInputTime:(NSInteger)time {
@@ -127,6 +142,24 @@
     }
 }
 
+- (void)setupTimeLabel {
+    
+    _timeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    _timeLabel.textAlignment = NSTextAlignmentCenter;
+    [self addSubview:_timeLabel];
+    
+    _timeLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    NSDictionary *views = NSDictionaryOfVariableBindings(_timeLabel);
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_timeLabel]|"
+                                                                 options:0
+                                                                 metrics:nil
+                                                                   views:views]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_timeLabel]|"
+                                                                 options:0
+                                                                 metrics:nil
+                                                                   views:views]];
+}
+
 - (void)timerCompleted {
     [self.timer invalidate];
 
@@ -134,6 +167,10 @@
     _didFinish = YES;
 
     _elapsedTime = self.totalTime;
+    
+    if (_hidesTimeLabelWhenFinished) {
+        [_timeLabel setHidden:YES];
+    }
 
     if ([self.delegate respondsToSelector:@selector(circleCounterTimeDidExpire:)]) {
         [self.delegate circleCounterTimeDidExpire:self];

@@ -46,6 +46,16 @@
 @property (assign, nonatomic, readonly) NSTimeInterval elapsedTime;
 
 
+/// label that shows remaining time in the middle of the circle
+@property (nonatomic, strong, readonly) UILabel *timeLabel;
+
+/// hides or shows timeLabel
+@property (nonatomic, assign) BOOL timeLabelHidden;
+
+// hides timeLabel when time is expired
+@property (nonatomic, assign) BOOL hidesTimeLabelWhenFinished;
+
+
 /**
  * Begins the count down and starts the animation. This has no effect if the counter
  * isRunning. If a counter didFinish, you may restart it again by calling this method.
