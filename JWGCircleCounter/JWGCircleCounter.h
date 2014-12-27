@@ -45,13 +45,14 @@
 /// and is updated in real time.
 @property (assign, nonatomic, readonly) NSTimeInterval elapsedTime;
 
-/// label that shows remaining time in the middle of the circle
+/// Label that shows remaining time in the middle of the circle. It can be styled
+/// using textColor and font properties of UILabel.
 @property (nonatomic, strong, readonly) UILabel *timerLabel;
 
-/// hides or shows timeLabel
+/// Hides or shows timeLabel - default is NO.
 @property (nonatomic, assign) BOOL timerLabelHidden;
 
-// hides timeLabel when time is expired
+/// Hides timeLabel when time is expired - default is YES.
 @property (nonatomic, assign) BOOL hidesTimerLabelWhenFinished;
 
 
