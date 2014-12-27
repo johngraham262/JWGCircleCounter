@@ -127,7 +127,6 @@
 }
 
 - (void)setTimeLabelHidden:(BOOL)timeLabelHidden {
-    
     _timeLabelHidden = timeLabelHidden;
     
     [_timeLabel setHidden:timeLabelHidden];
@@ -143,7 +142,6 @@
 }
 
 - (void)setupTimeLabel {
-    
     _timeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     _timeLabel.textAlignment = NSTextAlignmentCenter;
     [self addSubview:_timeLabel];

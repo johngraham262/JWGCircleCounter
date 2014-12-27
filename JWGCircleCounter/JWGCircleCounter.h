@@ -45,7 +45,6 @@
 /// and is updated in real time.
 @property (assign, nonatomic, readonly) NSTimeInterval elapsedTime;
 
-
 /// label that shows remaining time in the middle of the circle
 @property (nonatomic, strong, readonly) UILabel *timeLabel;
 
