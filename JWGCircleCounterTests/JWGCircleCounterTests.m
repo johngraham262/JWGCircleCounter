@@ -129,14 +129,15 @@
 
 - (void)testTimerLabelDisplaysCorrectly {
     [Expecta setAsynchronousTestTimeout:3];
+    self.circleCounter.delegate = self;
     self.circleCounter.timerLabelHidden = NO;
     [self.circleCounter startWithSeconds:2];
-    XCTAssertEqual(self.circleCounter.timerLabel.text, @"2",
+    XCTAssertTrue([self.circleCounter.timerLabel.text isEqualToString:@"2"],
                    @"Circle timer label should display the start time on start.");
     
-    EXP_expect(self.delegateCalled).will.beTruthy(); // timer finished
-    XCTAssertEqual(self.circleCounter.timerLabel.text, @"0",
-                   @"Circle timer label should display 0 on finish.");
+    EXP_expect(self.delegateCalled).will.beTruthy();
+    XCTAssertTrue([self.circleCounter.timerLabel.text isEqualToString:@"0"],
+                  @"Circle timer label should display 0 on finish." );
 }
 
 - (void)testTimerLabelHiddenYes {
