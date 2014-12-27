@@ -33,7 +33,7 @@
     self.circleFillColor = JWG_CIRCLE_FILL_COLOR_DEFAULT;
     self.circleTimerWidth = JWG_CIRCLE_TIMER_WIDTH;
     
-    [self setupTimeLabel];
+    [self setupTimerLabel];
     
     self.completedTimeUpToLastStop = 0;
     _elapsedTime = 0;
@@ -75,8 +75,8 @@
     self.completedTimeUpToLastStop = 0;
     _elapsedTime = 0;
     
-    if (!_timeLabelHidden) {
-        [_timeLabel setHidden:NO];
+    if (!_timerLabelHidden) {
+        [_timerLabel setHidden:NO];
     }
 
     [self.timer fire];
@@ -95,7 +95,7 @@
         [self timerCompleted];
     }
 
-    _timeLabel.text = [NSString stringWithFormat:@"%li", (long)ceil(_totalTime - _elapsedTime)];
+    _timerLabel.text = [NSString stringWithFormat:@"%li", (long)ceil(_totalTime - _elapsedTime)];
     
     [self setNeedsDisplay];
 }
@@ -126,10 +126,10 @@
     _didFinish = NO;
 }
 
-- (void)setTimeLabelHidden:(BOOL)timeLabelHidden {
-    _timeLabelHidden = timeLabelHidden;
+- (void)setTimerLabelHidden:(BOOL)timerLabelHidden {
+    _timerLabelHidden = timerLabelHidden;
     
-    [_timeLabel setHidden:timeLabelHidden];
+    [_timerLabel setHidden:timerLabelHidden];
 }
 
 #pragma mark - Private methods
@@ -141,18 +141,18 @@
     }
 }
 
-- (void)setupTimeLabel {
-    _timeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    _timeLabel.textAlignment = NSTextAlignmentCenter;
-    [self addSubview:_timeLabel];
+- (void)setupTimerLabel {
+    _timerLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    _timerLabel.textAlignment = NSTextAlignmentCenter;
+    [self addSubview:_timerLabel];
     
-    _timeLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    NSDictionary *views = NSDictionaryOfVariableBindings(_timeLabel);
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_timeLabel]|"
+    _timerLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    NSDictionary *views = NSDictionaryOfVariableBindings(_timerLabel);
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_timerLabel]|"
                                                                  options:0
                                                                  metrics:nil
                                                                    views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_timeLabel]|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_timerLabel]|"
                                                                  options:0
                                                                  metrics:nil
                                                                    views:views]];
@@ -166,8 +166,8 @@
 
     _elapsedTime = self.totalTime;
     
-    if (_hidesTimeLabelWhenFinished) {
-        [_timeLabel setHidden:YES];
+    if (_hidesTimerLabelWhenFinished) {
+        [_timerLabel setHidden:YES];
     }
 
     if ([self.delegate respondsToSelector:@selector(circleCounterTimeDidExpire:)]) {
