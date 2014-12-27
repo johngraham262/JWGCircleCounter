@@ -34,6 +34,7 @@
     self.circleTimerWidth = JWG_CIRCLE_TIMER_WIDTH;
     
     [self setupTimerLabel];
+    self.timerLabelHidden = NO;
     
     self.completedTimeUpToLastStop = 0;
     _elapsedTime = 0;
