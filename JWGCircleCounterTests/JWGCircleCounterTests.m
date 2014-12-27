@@ -127,4 +127,30 @@
                    @"Circle counter should not be finished after a reset.");
 }
 
+- (void)testTimerLabelDisplaysCorrectly {
+    [Expecta setAsynchronousTestTimeout:3];
+    self.circleCounter.timerLabelHidden = NO;
+    [self.circleCounter startWithSeconds:2];
+    XCTAssertEqual(self.circleCounter.timerLabel.text, @"2",
+                   @"Circle timer label should display the start time on start.");
+    
+    EXP_expect(self.delegateCalled).will.beTruthy(); // timer finished
+    XCTAssertEqual(self.circleCounter.timerLabel.text, @"0",
+                   @"Circle timer label should display 0 on finish.");
+}
+
+- (void)testTimerLabelHiddenYes {
+    self.circleCounter.timerLabelHidden = YES;
+    [self.circleCounter startWithSeconds:3];
+    XCTAssertEqual(self.circleCounter.timerLabel.hidden, YES,
+                   @"Circle timer label should be hidden.");
+}
+
+- (void)testTimerLabelHiddenNo {
+    self.circleCounter.timerLabelHidden = NO;
+    [self.circleCounter startWithSeconds:3];
+    XCTAssertEqual(self.circleCounter.timerLabel.hidden, NO,
+                   @"Circle timer label should not be hidden.");
+}
+
 @end
