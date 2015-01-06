@@ -30,8 +30,12 @@
 
     self.circleColor = JWG_CIRCLE_COLOR_DEFAULT;
     self.circleBackgroundColor = JWG_CIRCLE_BACKGROUND_COLOR_DEFAULT;
+    self.circleFillColor = JWG_CIRCLE_FILL_COLOR_DEFAULT;
     self.circleTimerWidth = JWG_CIRCLE_TIMER_WIDTH;
-
+    
+    [self setupTimerLabel];
+    self.timerLabelHidden = NO;
+    
     self.completedTimeUpToLastStop = 0;
     _elapsedTime = 0;
 }
@@ -71,6 +75,10 @@
     self.lastStartTime = [NSDate dateWithTimeIntervalSinceNow:0];
     self.completedTimeUpToLastStop = 0;
     _elapsedTime = 0;
+    
+    if (!_timerLabelHidden) {
+        [_timerLabel setHidden:NO];
+    }
 
     [self.timer fire];
 }
@@ -88,6 +96,8 @@
         [self timerCompleted];
     }
 
+    _timerLabel.text = [NSString stringWithFormat:@"%li", (long)ceil(_totalTime - _elapsedTime)];
+    
     [self setNeedsDisplay];
 }
 
@@ -117,6 +127,12 @@
     _didFinish = NO;
 }
 
+- (void)setTimerLabelHidden:(BOOL)timerLabelHidden {
+    _timerLabelHidden = timerLabelHidden;
+    
+    [_timerLabel setHidden:timerLabelHidden];
+}
+
 #pragma mark - Private methods
 
 + (void)validateInputTime:(NSInteger)time {
@@ -126,6 +142,23 @@
     }
 }
 
+- (void)setupTimerLabel {
+    _timerLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    _timerLabel.textAlignment = NSTextAlignmentCenter;
+    [self addSubview:_timerLabel];
+    
+    _timerLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    NSDictionary *views = NSDictionaryOfVariableBindings(_timerLabel);
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_timerLabel]|"
+                                                                 options:0
+                                                                 metrics:nil
+                                                                   views:views]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_timerLabel]|"
+                                                                 options:0
+                                                                 metrics:nil
+                                                                   views:views]];
+}
+
 - (void)timerCompleted {
     [self.timer invalidate];
 
@@ -133,6 +166,10 @@
     _didFinish = YES;
 
     _elapsedTime = self.totalTime;
+    
+    if (_hidesTimerLabelWhenFinished) {
+        [_timerLabel setHidden:YES];
+    }
 
     if ([self.delegate respondsToSelector:@selector(circleCounterTimeDidExpire:)]) {
         [self.delegate circleCounterTimeDidExpire:self];
@@ -154,7 +191,8 @@
                     2*M_PI,
                     0);
     CGContextSetStrokeColorWithColor(context, [self.circleBackgroundColor CGColor]);
-    CGContextStrokePath(context);
+    CGContextSetFillColorWithColor(context, [self.circleFillColor CGColor]);
+    CGContextDrawPath(context, kCGPathFillStroke);
 
     // Draw the remaining amount of timer circle.
     CGContextSetLineWidth(context, self.circleTimerWidth);

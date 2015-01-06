@@ -10,6 +10,7 @@
 // Defaults
 #define JWG_CIRCLE_COLOR_DEFAULT [UIColor colorWithRed:239/255.0f green:101/255.0f blue:48/255.0f alpha:1]
 #define JWG_CIRCLE_BACKGROUND_COLOR_DEFAULT [UIColor colorWithWhite:.85f alpha:1]
+#define JWG_CIRCLE_FILL_COLOR_DEFAULT [UIColor clearColor]
 #define JWG_CIRCLE_TIMER_WIDTH 8.0f
 
 @protocol JWGCircleCounterDelegate;
@@ -24,6 +25,9 @@
 
 /// The color of the circle indicating the expired amount of time - default is JWG_CIRCLE_BACKGROUND_COLOR_DEFAULT.
 @property (nonatomic, strong) UIColor *circleBackgroundColor;
+
+/// The color of inside of the circle - default is JWG_CIRCLE_FILL_COLOR_DEFAULT.
+@property (nonatomic, strong) UIColor *circleFillColor;
 
 /// The thickness of the circle color - default is JWG_CIRCLE_TIMER_WIDTH.
 @property (nonatomic, assign) CGFloat circleTimerWidth;
@@ -40,6 +44,16 @@
 /// The amount of time that the timer has completed. It takes into account any stops/resumes
 /// and is updated in real time.
 @property (assign, nonatomic, readonly) NSTimeInterval elapsedTime;
+
+/// Label that shows remaining time in the middle of the circle. It can be styled
+/// using textColor and font properties of UILabel.
+@property (nonatomic, strong, readonly) UILabel *timerLabel;
+
+/// Hides or shows timeLabel - default is NO.
+@property (nonatomic, assign) BOOL timerLabelHidden;
+
+/// Hides timeLabel when time is expired - default is YES.
+@property (nonatomic, assign) BOOL hidesTimerLabelWhenFinished;
 
 
 /**
