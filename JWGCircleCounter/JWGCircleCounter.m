@@ -167,7 +167,7 @@
 
     _elapsedTime = self.totalTime;
     
-    if (_hidesTimerLabelWhenFinished) {
+    if (self.hidesTimerLabelWhenFinished) {
         [_timerLabel setHidden:YES];
     }
 
