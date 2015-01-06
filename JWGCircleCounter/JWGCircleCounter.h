@@ -49,7 +49,7 @@
 /// using textColor and font properties of UILabel.
 @property (nonatomic, strong, readonly) UILabel *timerLabel;
 
-/// Hides or shows timeLabel - default is NO.
+/// Hides or shows timeLabel - default is YES.
 @property (nonatomic, assign) BOOL timerLabelHidden;
 
 /// Hides timeLabel when time is expired - default is YES.

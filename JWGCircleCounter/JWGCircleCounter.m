@@ -34,7 +34,8 @@
     self.circleTimerWidth = JWG_CIRCLE_TIMER_WIDTH;
     
     [self setupTimerLabel];
-    self.timerLabelHidden = NO;
+    self.timerLabelHidden = YES;
+    self.hidesTimerLabelWhenFinished = YES;
     
     self.completedTimeUpToLastStop = 0;
     _elapsedTime = 0;
@@ -75,10 +76,8 @@
     self.lastStartTime = [NSDate dateWithTimeIntervalSinceNow:0];
     self.completedTimeUpToLastStop = 0;
     _elapsedTime = 0;
-    
-    if (!_timerLabelHidden) {
-        [_timerLabel setHidden:NO];
-    }
+
+    _timerLabel.hidden = self.timerLabelHidden;
 
     [self.timer fire];
 }
@@ -166,10 +165,8 @@
     _didFinish = YES;
 
     _elapsedTime = self.totalTime;
-    
-    if (self.hidesTimerLabelWhenFinished) {
-        [_timerLabel setHidden:YES];
-    }
+
+    _timerLabel.hidden = self.hidesTimerLabelWhenFinished;
 
     if ([self.delegate respondsToSelector:@selector(circleCounterTimeDidExpire:)]) {
         [self.delegate circleCounterTimeDidExpire:self];

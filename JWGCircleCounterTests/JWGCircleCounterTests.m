@@ -132,6 +132,7 @@
     self.circleCounter.delegate = self;
     self.circleCounter.timerLabelHidden = NO;
     [self.circleCounter startWithSeconds:2];
+
     XCTAssertTrue([self.circleCounter.timerLabel.text isEqualToString:@"2"],
                    @"Circle timer label should display the start time on start.");
     
@@ -141,8 +142,9 @@
 }
 
 - (void)testTimerLabelHiddenYes {
-    self.circleCounter.timerLabelHidden = YES;
+    // self.circleCounter.timerLabelHidden = YES; // default is YES
     [self.circleCounter startWithSeconds:3];
+
     XCTAssertEqual(self.circleCounter.timerLabel.hidden, YES,
                    @"Circle timer label should be hidden.");
 }
@@ -150,8 +152,34 @@
 - (void)testTimerLabelHiddenNo {
     self.circleCounter.timerLabelHidden = NO;
     [self.circleCounter startWithSeconds:3];
+
     XCTAssertEqual(self.circleCounter.timerLabel.hidden, NO,
                    @"Circle timer label should not be hidden.");
+}
+
+- (void)testTimerLabelHiddenOnCompletionYES {
+    [Expecta setAsynchronousTestTimeout:3];
+
+    // self.circleCounter.hidesTimerLabelWhenFinished = YES; // default is YES
+    self.circleCounter.delegate = self;
+    [self.circleCounter startWithSeconds:1];
+
+
+    EXP_expect(self.delegateCalled).will.beTruthy();
+    XCTAssertEqual(self.circleCounter.timerLabel.hidden, YES,
+                   @"Circle timer label should be hidden when finished.");
+}
+
+- (void)testTimerLabelHiddenOnCompletionNo {
+    [Expecta setAsynchronousTestTimeout:3];
+
+    self.circleCounter.hidesTimerLabelWhenFinished = NO;
+    self.circleCounter.delegate = self;
+    [self.circleCounter startWithSeconds:1];
+
+    EXP_expect(self.delegateCalled).will.beTruthy();
+    XCTAssertEqual(self.circleCounter.timerLabel.hidden, NO,
+                   @"Circle timer label should not be hidden when finished.");
 }
 
 @end
