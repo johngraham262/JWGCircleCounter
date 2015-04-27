@@ -18,7 +18,7 @@
 @interface JWGCircleCounter : UIView
 
 /// The receiver of all counter delegate callbacks.
-@property (nonatomic, strong) id<JWGCircleCounterDelegate> delegate;
+@property (nonatomic, weak) id<JWGCircleCounterDelegate> delegate;
 
 /// The color of the circle indicating the remaining amount of time - default is JWG_CIRCLE_COLOR_DEFAULT.
 @property (nonatomic, strong) UIColor *circleColor;
