@@ -88,6 +88,7 @@
     }
 
     _elapsedTime = value;
+    self.completedTimeUpToLastStop = value;
 
     // Check if timer has expired.
     if (self.elapsedTime > self.totalTime) {
