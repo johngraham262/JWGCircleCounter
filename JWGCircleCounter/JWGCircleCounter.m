@@ -82,6 +82,24 @@
     [self.timer fire];
 }
 
+- (void)updateElapsedTime:(NSTimeInterval)value {
+    if (_isRunning) {
+        return;
+    }
+
+    _elapsedTime = value;
+    self.completedTimeUpToLastStop = value;
+
+    // Check if timer has expired.
+    if (self.elapsedTime > self.totalTime) {
+        [self timerCompleted];
+    }
+
+    _timerLabel.text = [NSString stringWithFormat:@"%li", (long)ceil(_totalTime - _elapsedTime)];
+
+    [self setNeedsDisplay];
+}
+
 - (void)timerFired {
     if (!_isRunning) {
         return;
